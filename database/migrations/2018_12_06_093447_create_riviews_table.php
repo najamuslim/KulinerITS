@@ -15,6 +15,10 @@ class CreateRiviewsTable extends Migration
     {
         Schema::create('riviews', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('user_id');
+            $table->integer('tempat_id');
+            $table->boolean('like');
+            $table->longText('riview');
             $table->timestamps();
         });
     }

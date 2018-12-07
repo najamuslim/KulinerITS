@@ -11,10 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/', 'TempatMakanController@index');
 
 Auth::routes();
 
+Route::resource('tempatmakan','TempatMakanController');
+
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/addPlace', 'TempatMakanController@create');
