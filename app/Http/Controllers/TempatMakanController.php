@@ -73,7 +73,10 @@ class TempatMakanController extends Controller
      */
     public function edit(TempatMakan $tempatMakan)
     {
-        //
+        return $tempatMakan;
+        $tempatMakan = TempatMakan::find($tempatMakan->id);
+        return $tempatMakan;
+        //return view('tempatmakan.edit', ['tempatMakan'=>$tempatMakan]);
     }
 
     /**
@@ -85,7 +88,17 @@ class TempatMakanController extends Controller
      */
     public function update(Request $request, TempatMakan $tempatMakan)
     {
-        //
+        $tempatMakan = TempatMakan::find($tempatMakan->id);
+
+        $tempatMakan->tempat_name = $request->tempat_name;
+        $tempatMakan->tipe_makanan = $request->tipe_makanan;
+        $tempatMakan->alamat = $request->alamat;
+
+        if($tempatMakan->save()){
+            return redirect()->route('tempatmakan.index')->with('success',$tempatMakan->tempat_name.' Record has been updated Succesfully');
+        }
+
+        return back()->withInput();
     }
 
     /**

@@ -2,6 +2,25 @@
 
 @section('content')
     <div class="container">
+        <script>$(function(){
+                $(document).on('click', '.like-review', function(e) {
+                    var btn = $(this);
+                    $.ajax({
+                        type:'POST',
+                        url:'{{route('riview.store')}}',
+                        data: {
+                            _token : '<?php echo csrf_token() ?>',
+                            tempat_id: $(this).attr('id'),
+                            like:1
+                        },
+                        success:function(data) {
+                            console.log(data);
+                            btn.html('<i class="fa fa-heart" aria-hidden="true"></i>  &nbsp;'+data);
+                        }
+                    });
+                });
+            });
+        </script>
                 <table class="table" id="place_id">
                     <thead>
                     <tr>
@@ -21,7 +40,22 @@
                             <td>{{ $tempat->tempat_name }}</td>
                             <td>{{ $tempat->tipe_makanan }}</td>
                             <td>{{ $tempat->alamat }}</td>
-                            <td>{{ $tempat->jumlah_like }}</td>
+                            @php
+                                $like = \App\Riview::where([['tempat_id','=',$tempat->id],['like','=',1]])->get()->count();
+                            @endphp
+                            <td>
+                                <button id="{{$tempat->id}}" class="btn-secondary like-review btn-like">
+                                    <i class="fa fa-heart" aria-hidden="true"></i> &nbsp;{{ $like }}
+                                </button>
+                            </td>
+                            <td colspan="2">
+                                <a href="{{route('tempatmakan.edit',$tempat->id)}}" class="btn btn-warning">Edit</a>
+                                <form style="display: inline-block" method="post" action="#">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button href="#" class="btn btn-danger">Delete</button>
+                                </form>
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>

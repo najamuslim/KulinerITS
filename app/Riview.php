@@ -14,4 +14,11 @@ class Riview extends Model
     {
         return $this->belongsTo('App\TempatMakan');
     }
+
+    protected $fillable = [
+        'user_id',
+        'tempat_id',
+        'like',
+        'riview'
+    ];
 }
