@@ -15,6 +15,8 @@ class TempatMakanController extends Controller
     public function index()
     {
         $tempat_makans = TempatMakan::all();
+
+            //return view('admin.show_tempat', ['tempat_makans'=>$tempat_makans]);
         return view('show_tempat', ['tempat_makans'=>$tempat_makans]);
     }
 
@@ -60,9 +62,11 @@ class TempatMakanController extends Controller
      * @param  \App\TempatMakan  $tempatMakan
      * @return \Illuminate\Http\Response
      */
-    public function show(TempatMakan $tempatMakan)
+    public function show(TempatMakan $tempatmakan)
     {
-        //
+        $tempatmakan = TempatMakan::find($tempatmakan->id);
+        //echo $tempatMakan->id;
+        return view('riview', ['tempatmakan'=>$tempatmakan]);
     }
 
     /**
@@ -71,12 +75,11 @@ class TempatMakanController extends Controller
      * @param  \App\TempatMakan  $tempatMakan
      * @return \Illuminate\Http\Response
      */
-    public function edit(TempatMakan $tempatMakan)
+    public function edit(TempatMakan $tempatmakan)
     {
-        return $tempatMakan;
-        $tempatMakan = TempatMakan::find($tempatMakan->id);
-        return $tempatMakan;
-        //return view('tempatmakan.edit', ['tempatMakan'=>$tempatMakan]);
+        //return $tempatMakan;
+        $tempatmakan = TempatMakan::find($tempatmakan->id);
+        return view('admin.edit', ['tempatmakan'=>$tempatmakan]);
     }
 
     /**
@@ -86,16 +89,16 @@ class TempatMakanController extends Controller
      * @param  \App\TempatMakan  $tempatMakan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TempatMakan $tempatMakan)
+    public function update(Request $request, TempatMakan $tempatmakan)
     {
-        $tempatMakan = TempatMakan::find($tempatMakan->id);
+        $tempatmakan = TempatMakan::find($tempatmakan->id);
 
-        $tempatMakan->tempat_name = $request->tempat_name;
-        $tempatMakan->tipe_makanan = $request->tipe_makanan;
-        $tempatMakan->alamat = $request->alamat;
+        $tempatmakan->tempat_name = $request->tempat_name;
+        $tempatmakan->tipe_makanan = $request->tipe_makanan;
+        $tempatmakan->alamat = $request->alamat;
 
-        if($tempatMakan->save()){
-            return redirect()->route('tempatmakan.index')->with('success',$tempatMakan->tempat_name.' Record has been updated Succesfully');
+        if($tempatmakan->save()){
+            return redirect()->route('tempatmakan.index')->with('success',$tempatmakan->tempat_name.' Record has been updated Succesfully');
         }
 
         return back()->withInput();
@@ -107,8 +110,11 @@ class TempatMakanController extends Controller
      * @param  \App\TempatMakan  $tempatMakan
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TempatMakan $tempatMakan)
+    public function destroy(TempatMakan $tempatmakan)
     {
-        //
+        $s = TempatMakan::find($tempatmakan->id);
+        if($s->delete()){
+            return redirect()->route('tempatmakan.index')->with('success', $tempatmakan->tempat_name. ' record has been deleted');
+        }
     }
 }

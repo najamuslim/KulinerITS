@@ -49,12 +49,7 @@
                                 </button>
                             </td>
                             <td colspan="2">
-                                <a href="{{route('tempatmakan.edit',$tempat->id)}}" class="btn btn-warning">Edit</a>
-                                <form style="display: inline-block" method="post" action="#">
-                                    {{ csrf_field() }}
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <button href="#" class="btn btn-danger">Delete</button>
-                                </form>
+                                <a href="{{route('tempatmakan.show',$tempat->id)}}" type="button" class="btn btn-primary">Riview</a>
                             </td>
                         </tr>
                     @endforeach
