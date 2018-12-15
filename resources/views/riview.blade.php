@@ -32,6 +32,7 @@
                         <td>Jumlah Like</td>
                         @php
                             $like = \App\Like::where([['tempat_id','=',$tempatmakan->id],['like','=',1]])->get()->count();
+                            $reviewnya = \App\Review::where([['tempat_id','=',$tempatmakan->id],['user_id','=',Auth::user()->id]])->first();
                         @endphp
                         <td>{{$like}}</td>
                     </tr>
@@ -41,7 +42,12 @@
             {{ csrf_field() }}
             <div class="form-group">
                 <label>Review This Place Here</label>
-                <textarea style="height: 100px" class="form-control" name="review" placeholder="Enter Your Review"></textarea>
+                <textarea style="height: 100px" class="form-control" name="review" placeholder="Enter Your Review"><?php
+                    if($reviewnya)
+                        echo $reviewnya->review;
+                    else
+                        echo "";
+                    ?></textarea>
             </div>
             <div>
                 <input class="btn btn-primary" type="submit" value="Post">
@@ -57,11 +63,27 @@
 
             @endif
         </div>
+        <?php
+            $reviews = \App\Review::where([['tempat_id','=',$tempatmakan->id]])->get();
+        ?>
+        @foreach($reviews as $item)
+            <?php
+                if($item->user_id != Auth::user()->id):
+            ?>
         <div class="card bg-light mb-3" style="margin-top: 10px; width: 1110px">
-            <div class="card-header" style="width: 1110px">Nama pereview</div>
+            <div class="card-header" style="width: 1110px"><?php
+                $nama = \App\User::where([['id','=',$item->user_id]])->first();
+                echo $nama->name;
+                ?>
+            </div>
             <div class="card-body" style="width: 1110px">
-                <p class="card-text">Reviewnya.</p>
+                <p class="card-text"><?php echo $item->review; ?>
+                </p>
             </div>
         </div>
+            <?php
+                endif;
+            ?>
+        @endforeach
     </div>
 @endsection

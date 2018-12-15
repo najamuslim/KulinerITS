@@ -35,19 +35,19 @@ class ReviewController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+     {
         $tempatmakan = TempatMakan::find($request->input('id'));
 
         $request->validate([
             'review' => 'required'
         ]);
 
-        $review = new Review();
-        $review->user_id = \Auth::user()->id;
-        $review->tempat_id = $tempatmakan->id;
-        $review->review = $request->input('review');
-
-        if($review){
+        $riview = new Review();
+        $riview->user_id = \Auth::user()->id;
+        $riview->tempat_id = $tempatmakan->id;
+        $riview->review = $request->input('review');
+        //return $riview->review;
+        if($riview->save()){
             return redirect()->route('tempatmakan.index')->with('success', 'Place Review Record Successfully..!');
         }
         return back()->withInput();

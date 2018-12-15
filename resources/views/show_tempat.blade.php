@@ -66,7 +66,7 @@
                             @endphp
                             <td>
                                 <button id="{{$tempat->id}}" class="btn-secondary like-review btn-like">
-                                    <i class="fa fa-heart" aria-hidden="true">&nbsp;{{ $like }}</i> &nbsp;
+                                    <i class="fa fa-heart" aria-hidden="true">&nbsp;&nbsp;{{ $like }}</i> &nbsp;
                                 </button>
                             </td>
                             <td colspan="2">
