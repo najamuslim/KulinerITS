@@ -17,8 +17,8 @@ class TempatMakanController extends Controller
      */
     public function index()
     {
-        $tempat_makans = \DB::table('tempat_makans')->paginate(5);
-        return view('show_tempat', ['tempat_makans'=>$tempat_makans]);
+        $tempat_makans = TempatMakan::all();
+        return view('show_tempat',['tempat_makans'=>$tempat_makans]);
     }
 
     /**
@@ -88,9 +88,14 @@ class TempatMakanController extends Controller
      */
     public function edit(TempatMakan $tempatmakan)
     {
-        //return $tempatMakan;
+        $temp = $tempatmakan->tipemakanan()->get();
+        $tipe_select = array();
+        foreach ($temp as $item)
+            $tipe_select[$item->id] = true;
+
+        $tipe_makanans = TipeMakanan::all();
         $tempatmakan = TempatMakan::find($tempatmakan->id);
-        return view('admin.edit', ['tempatmakan'=>$tempatmakan]);
+        return view('admin.edit', ['tempatmakan'=>$tempatmakan],['tipe_makanans'=>$tipe_makanans])->with(compact('tipe_select'));
     }
 
     /**
@@ -103,10 +108,21 @@ class TempatMakanController extends Controller
     public function update(Request $request, TempatMakan $tempatmakan)
     {
         $tempatmakan = TempatMakan::find($tempatmakan->id);
-
+        $this->validate($request,[
+            'tempat_name' => 'required',
+            'alamat' => 'required',
+        ],[
+            'tempat_name.required' => 'Place name required!',
+            'alamat.required' => 'Place address required!'
+        ]);
         $tempatmakan->tempat_name = $request->tempat_name;
-        $tempatmakan->tipe_id = $request->tipe_id;
         $tempatmakan->alamat = $request->alamat;
+
+        $tipes = $request->input('tipe_makanan');
+        if(!empty($tipes)) {
+            foreach ($tipes as $key=>$tipe)
+                $tempatmakan->tipemakanan()->attach([$tipe]);
+        }
 
         if($tempatmakan->save()){
             return redirect()->route('tempatmakan.index')->with('success',$tempatmakan->tempat_name.' Record has been updated Succesfully');
@@ -123,8 +139,8 @@ class TempatMakanController extends Controller
      */
     public function destroy(TempatMakan $tempatmakan)
     {
-        $s = TempatMakan::find($tempatmakan->id);
-        if($s->delete()){
+        //$tempatmakan = TempatMakan::find($tempatmakan->id);
+        if($tempatmakan->delete()){
             return redirect()->route('tempatmakan.index')->with('success', $tempatmakan->tempat_name. ' record has been deleted');
         }
     }

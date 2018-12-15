@@ -36,12 +36,12 @@
                         <td>{{$like}}</td>
                     </tr>
                 </table>
-        <form method="post" action="{{route('review.store')}}">
+        <form method="post" action="{{route('review.store', $tempatmakan)}}">
             <input type="hidden" name="_method" value="PUT">
             {{ csrf_field() }}
             <div class="form-group">
                 <label>Review This Place Here</label>
-                <textarea style="height: 100px" class="form-control" name="review" placeholder="Enter Your Review">belum</textarea>
+                <textarea style="height: 100px" class="form-control" name="review" placeholder="Enter Your Review"></textarea>
             </div>
             <div>
                 <input class="btn btn-primary" type="submit" value="Post">
@@ -56,6 +56,12 @@
                 @endforeach
 
             @endif
+        </div>
+        <div class="card bg-light mb-3" style="margin-top: 10px; width: 1110px">
+            <div class="card-header" style="width: 1110px">Nama pereview</div>
+            <div class="card-body" style="width: 1110px">
+                <p class="card-text">Reviewnya.</p>
+            </div>
         </div>
     </div>
 @endsection

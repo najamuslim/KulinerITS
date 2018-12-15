@@ -20,8 +20,11 @@
                         </div>
                         <div class="form-group">
                             <label>Place Food Type</label>
-                            <input type="text" class="form-control" name="tipe_makanan" placeholder="Enter Place Type of Food"
-                                   value="{{ $tempatmakan->tipe_id }}">
+                            <select style="width: 500px" class="js-example-basic-multiple" name="tipe_makanan[]" multiple="multiple">
+                                @foreach($tipe_makanans as $tipe)
+                                    <option value="{{$tipe->id}}"@if(!empty($tipe_select[$tipe->id])) selected @endif>{{$tipe->tipe_makanan}}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
                             <label>Place Address</label>
@@ -43,6 +46,12 @@
         </div>
     </div>
     </div>
+    <link href="{{asset('css/select2.min.css')}}" rel="stylesheet" />
+    <script src="{{asset('js/select2.min.js')}}"></script>
 
-
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2();
+        });
+    </script>
 @endsection

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Review;
+use App\TempatMakan;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
@@ -33,7 +34,7 @@ class ReviewController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, TempatMakan $tempatmakan)
     {
         $request->validate([
             'review' => 'required'
@@ -41,12 +42,12 @@ class ReviewController extends Controller
 
         $review = Review::create([
             'user_id' => \Auth::user()->id,
-            'tipe_id' => $request->input('tipe_id'),
+            'tempat_id' => $tempatmakan->id,
             'review' => $request->input('review'),
         ]);
 
         if($review){
-            return redirect()->route('tempatmakan.create')->with('success', 'Place Record Successfully..!');
+            return redirect()->route('tempatmakan.index')->with('success', 'Place Review Record Successfully..!');
         }
         return back()->withInput();
     }

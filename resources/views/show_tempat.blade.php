@@ -48,17 +48,19 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <?php $x=1; ?>
+                    <?php $x=1;
+                     $tempat_makans = \DB::table('tempat_makans')->paginate(5);
+                    ?>
                     @foreach($tempat_makans as $tempat)
                         <tr>
                             <td>{{ $x++ }}</td>
                             <td>{{ $tempat->tempat_name }}</td>
                             <td>
-                                {{--@foreach($tempat->tipemakanan()->get() as $tipe)--}}
-                                    {{--<?php--}}
-                                    {{--echo "<li>$tipe->tipe_makanan</li>";--}}
-                                    {{--?>--}}
-                                {{--@endforeach--}}
+                                @foreach($tempat->tipemakanan()->get() as $tipe)
+                                    <?php
+                                    echo "<li>$tipe->tipe_makanan</li>";
+                                    ?>
+                                @endforeach
                             </td>
                             <td>{{ $tempat->alamat }}</td>
                             @php
