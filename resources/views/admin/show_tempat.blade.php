@@ -1,7 +1,15 @@
 @extends('layouts.app')
 
+@php
+    /** @var \App\TempatMakan $tempat */
+
+@endphp
+
 @section('content')
     <div class="container">
+        <div style="margin-bottom: 10px">
+            <a class="btn btn-primary" href="{{route('tipe.create')}}">AddTipe</a>
+        </div>
         <table class="table" id="place_id">
             <thead>
             <tr>
@@ -19,11 +27,13 @@
                 <tr>
                     <td>{{ $x++ }}</td>
                     <td>{{ $tempat->tempat_name }}</td>
-                    <td>{{ $tempat->tipe_makanan }}</td>
+                    <td>@foreach($tempat->tipemakanan()->get() as $tipe)
+                        <?php
+                        echo "<li>$tipe->tipe_makanan</li>";
+                        ?>
+                    @endforeach
+                    </td>
                     <td>{{ $tempat->alamat }}</td>
-                    @php
-                        $like = \App\Riview::where([['tempat_id','=',$tempat->id],['like','=',1]])->get()->count();
-                    @endphp
                     <td>
                         <a href="{{route('tempatmakan.edit',$tempat->id)}}" class="btn btn-warning">Edit</a>
                     </td>

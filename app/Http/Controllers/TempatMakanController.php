@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Riview;
 use App\TempatMakan;
+use App\TipeMakanan;
 use Illuminate\Http\Request;
+use phpDocumentor\Reflection\Types\Integer;
 
 class TempatMakanController extends Controller
 {
@@ -14,9 +17,7 @@ class TempatMakanController extends Controller
      */
     public function index()
     {
-        $tempat_makans = TempatMakan::all();
-
-            //return view('admin.show_tempat', ['tempat_makans'=>$tempat_makans]);
+        $tempat_makans = \DB::table('tempat_makans')->paginate(5);
         return view('show_tempat', ['tempat_makans'=>$tempat_makans]);
     }
 
@@ -27,9 +28,16 @@ class TempatMakanController extends Controller
      */
     public function create()
     {
-        return view('tempatmakan.create');
+        $tipe_makanans = TipeMakanan::all();
+        return view('tempatmakan.create',['tipe_makanans'=>$tipe_makanans]);
     }
 
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+        $tempat_makans = \DB::table('tempat_makans')->where('tempat_name','like', '%'.$search.'%')->paginate(5);
+        return view('show_tempat', ['tempat_makans'=>$tempat_makans]);
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -40,17 +48,21 @@ class TempatMakanController extends Controller
     {
         $request->validate([
             'tempat_name' => 'required',
-            'tipe_makanan' => 'required',
             'alamat' => 'required'
         ]);
 
-        $student = TempatMakan::create([
+        $tempatmakan = TempatMakan::create([
             'tempat_name' => $request->input('tempat_name'),
-            'tipe_makanan' => $request->input('tipe_makanan'),
             'alamat' => $request->input('alamat'),
         ]);
 
-        if($student){
+        $tipes = $request->input('tipe_makanan');
+        if(!empty($tipes)) {
+            foreach ($tipes as $key=>$tipe)
+            $tempatmakan->tipemakanan()->attach([$tipe]);
+        }
+
+        if($tempatmakan){
             return redirect()->route('tempatmakan.create')->with('success', 'Place Record Successfully..!');
         }
         return back()->withInput();
@@ -65,7 +77,6 @@ class TempatMakanController extends Controller
     public function show(TempatMakan $tempatmakan)
     {
         $tempatmakan = TempatMakan::find($tempatmakan->id);
-        //echo $tempatMakan->id;
         return view('riview', ['tempatmakan'=>$tempatmakan]);
     }
 
@@ -94,7 +105,7 @@ class TempatMakanController extends Controller
         $tempatmakan = TempatMakan::find($tempatmakan->id);
 
         $tempatmakan->tempat_name = $request->tempat_name;
-        $tempatmakan->tipe_makanan = $request->tipe_makanan;
+        $tempatmakan->tipe_id = $request->tipe_id;
         $tempatmakan->alamat = $request->alamat;
 
         if($tempatmakan->save()){

@@ -16,9 +16,7 @@ class CreateTempatMakansTable extends Migration
         Schema::create('tempat_makans', function (Blueprint $table) {
             $table->increments('id');
             $table->string('tempat_name');
-            $table->string('tipe_makanan');
             $table->string('alamat');
-            $table->integer('jumlah_like')->default(0);
             $table->timestamps();
         });
     }

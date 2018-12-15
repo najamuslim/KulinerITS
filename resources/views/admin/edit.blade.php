@@ -21,7 +21,7 @@
                         <div class="form-group">
                             <label>Place Food Type</label>
                             <input type="text" class="form-control" name="tipe_makanan" placeholder="Enter Place Type of Food"
-                                   value="{{ $tempatmakan->tipe_makanan }}">
+                                   value="{{ $tempatmakan->tipe_id }}">
                         </div>
                         <div class="form-group">
                             <label>Place Address</label>

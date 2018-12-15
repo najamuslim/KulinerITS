@@ -17,9 +17,13 @@ Auth::routes();
 
 Route::resource('tempatmakan','TempatMakanController');
 
-Route::resource('riview','RiviewController');
+Route::resource('review','ReviewController');
+Route::resource('like','LikeController');
+Route::resource('tipe','TipeController');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->middleware('is_admin')->name('home');
 
 Route::get('/addPlace', 'TempatMakanController@create');
+
+Route::get('/search', 'TempatMakanController@search');
 
