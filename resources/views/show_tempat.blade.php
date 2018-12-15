@@ -29,7 +29,7 @@
         <div style="margin-bottom: 20px; align-items: center" class="col-md-4">
             <form action="{{url('/search')}}" method="get">
                 <div class="input-group">
-                    <input type="search" name="search" class="form-control">
+                    <input type="search" name="search" class="form-control" placeholder="Search Place Here">
                     <span class="input-group-prepend">
                         <button type="submit" class="btn btn-primary">Search</button>
                     </span>
@@ -48,9 +48,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <?php $x=1;
-                     $tempat_makans = \DB::table('tempat_makans')->paginate(5);
-                    ?>
+                    <?php $x=1;?>
                     @foreach($tempat_makans as $tempat)
                         <tr>
                             <td>{{ $x++ }}</td>

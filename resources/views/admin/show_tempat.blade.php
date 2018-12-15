@@ -35,10 +35,10 @@
                     </td>
                     <td>{{ $tempat->alamat }}</td>
                     <td>
-                        <a href="{{route('tempatmakan.edit',$tempat)}}" class="btn btn-warning">Edit</a>
+                        <a href="{{route('tempatmakan.edit',$tempat->id)}}" class="btn btn-warning">Edit</a>
                     </td>
                     <td colspan="2">
-                        <form style="display: inline-block" method="post" action="{{ route('tempatmakan.destroy', $tempat) }}">
+                        <form style="display: inline-block" method="post" action="{{ route('tempatmakan.destroy', $tempat->id) }}">
                             {{ csrf_field() }}
                             <input type="hidden" name="_method" value="DELETE">
                             <button class="btn btn-danger">Delete</button>

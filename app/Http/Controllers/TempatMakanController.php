@@ -17,7 +17,7 @@ class TempatMakanController extends Controller
      */
     public function index()
     {
-        $tempat_makans = TempatMakan::all();
+        $tempat_makans = TempatMakan::paginate(5);
         return view('show_tempat',['tempat_makans'=>$tempat_makans]);
     }
 
@@ -35,7 +35,7 @@ class TempatMakanController extends Controller
     public function search(Request $request)
     {
         $search = $request->input('search');
-        $tempat_makans = \DB::table('tempat_makans')->where('tempat_name','like', '%'.$search.'%')->paginate(5);
+        $tempat_makans = TempatMakan::where('tempat_name','like', '%'.$search.'%')->paginate(5);
         return view('show_tempat', ['tempat_makans'=>$tempat_makans]);
     }
     /**
@@ -107,6 +107,7 @@ class TempatMakanController extends Controller
      */
     public function update(Request $request, TempatMakan $tempatmakan)
     {
+        \DB::table('tipe_tempats')->where('id_tempat',$tempatmakan->id)->delete();
         $tempatmakan = TempatMakan::find($tempatmakan->id);
         $this->validate($request,[
             'tempat_name' => 'required',
@@ -139,8 +140,9 @@ class TempatMakanController extends Controller
      */
     public function destroy(TempatMakan $tempatmakan)
     {
-        //$tempatmakan = TempatMakan::find($tempatmakan->id);
-        if($tempatmakan->delete()){
+        \DB::table('tipe_tempats')->where('id_tempat',$tempatmakan->id)->delete();
+        $s = TempatMakan::find($tempatmakan->id)->delete();
+        if($s){
             return redirect()->route('tempatmakan.index')->with('success', $tempatmakan->tempat_name. ' record has been deleted');
         }
     }

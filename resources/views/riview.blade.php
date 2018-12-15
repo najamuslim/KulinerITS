@@ -36,8 +36,8 @@
                         <td>{{$like}}</td>
                     </tr>
                 </table>
-        <form method="post" action="{{route('review.store', $tempatmakan)}}">
-            <input type="hidden" name="_method" value="PUT">
+        <form method="post" action="{{route('review.store')}}">
+            <input type="hidden" name="id" value="{{$tempatmakan->id}}">
             {{ csrf_field() }}
             <div class="form-group">
                 <label>Review This Place Here</label>
